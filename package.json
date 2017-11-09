@@ -13,7 +13,7 @@
     "bluebird": "^3.5.1",
     "cheerio": "latest",
     "express": "latest",
-    "nodemon": "^1.12.1",
+    "nodemon": "*",
     "request": "latest",
     "request-promise": "^4.2.2"
   }
