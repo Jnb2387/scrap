@@ -12,6 +12,7 @@
     "axios": "^0.17.0",
     "bluebird": "^3.5.1",
     "cheerio": "latest",
+    "csvgeocode": "^2.3.0",
     "express": "latest",
     "nodemon": "^1.12.1",
     "request": "latest",
