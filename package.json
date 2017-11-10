@@ -8,9 +8,7 @@
     "type": "git",
     "url": "https://github.com/scotch-io/node-web-scraper"
   },
-  "scripts": {
-    "start": "nodemon --exec npm start"
-  },
+ 
   "dependencies": {
     "axios": "^0.17.0",
     "bluebird": "^3.5.1",
