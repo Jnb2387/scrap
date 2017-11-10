@@ -16,6 +16,7 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cheerio": "latest",
+    "cors": "^2.8.4",
     "csvgeocode": "^2.3.0",
     "express": "latest",
     "express-router": "0.0.1",

@@ -16,31 +16,32 @@ router.get("/", function (req, res) {
   var fileName = "home.html";
   res.sendFile(fileName, options);
 });
+
 router.get("/scrape", function(req,res){
   res.sendFile(__dirname + "/public/" + "scrape.html");
 })
+
 //Route to Scrape for geojson
-router.post("/scrapping", function (req, res) {
+router.post("/scrape", function (req, res) {
   var inputurl =req.body.scrapeurl;
-  var startobjectid =req.body.startobjectid;
-  var endobjectid =req.body.endobjectid;
-  var total = req.body.total;
-  var interval= req.body.interval;
-  console.log("start at ", startobjectid," add ",interval, " til ", total)
-  res.send("Scrapping")
-  // var total = 60000;
-  // var x = 1;
-  // var y = 25600;
-  // var data = [];
-for(var i = 0; i < total; i+= 1000){
-  console.log(i)
+  var startobjectid =parseInt(req.body.startobjectid);
+  var endobjectid =parseInt(req.body.endobjectid);
+  var total =parseInt(req.body.total);
+  var interval =parseInt(req.body.interval);
+  rp("https://services2.arcgis.com/VXHf6kKM5DRjswCH/ArcGIS/rest/services/NewGrids/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=&returnHiddenFields=false&returnGeometry=false&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&returnIdsOnly=false&returnCountOnly=true&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson&token=")
+  .then(function(response){
+var res=JSON.parse(response)
+    console.log(res.properties.count)
+  })
+  while (startobjectid < total) {
+      endobjectid += interval;
+      startobjectid+=interval;
+      console.log("end : " +endobjectid + "       start : " + startobjectid);
 }
-  // while (startobjectid < total) {
-  //   console.log(startobjectid)
-  //   // console.log("start x : " + x + "       start y : " + y);
 
 
-  //   // var url = "https://utility.arcgis.com/usrsvcs/servers/219fd69ea8984aa69ef1cfe2ee68c69b/rest/services/CTS_TF_0_AllRoutesSegs_fsView/FeatureServer/0/query?where=OBJECTID+BETWEEN+" +
+ 
+ //   // var url = "https://utility.arcgis.com/usrsvcs/servers/219fd69ea8984aa69ef1cfe2ee68c69b/rest/services/CTS_TF_0_AllRoutesSegs_fsView/FeatureServer/0/query?where=OBJECTID+BETWEEN+" +
   //   //   x +
   //   //   "+AND+" +
   //   //   y +
@@ -71,9 +72,8 @@ for(var i = 0; i < total; i+= 1000){
   //   y += 5000;
   //   x += 5000;
   //   // console.log("End   x : " + x + "       End y : " + y);
-  // startobjectid +=3
-  // }
- 
+//   res.send("Scrapping")
+  
 });
 
 

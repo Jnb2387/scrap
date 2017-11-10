@@ -17,7 +17,7 @@
 
 <body>
 
-    <form method="POST" action="/scrapping">
+    <form method="POST" action="/scrape">
         <p>
             <label for="scrapeurl">Url to scrape</label>
             <textarea id="scrapeurl" name="scrapeurl"></textarea>
@@ -28,20 +28,38 @@
         </p>
         <p>
             <label for="endobjectid">Ending Value</label>
-            <input type="number" id="endobjectid">
+            <input type="number" id="endobjectid" name="endobjectid">
         </p>
         <p>
+            
             <label for="total">Total</label>
+
             <input type="number" id="total" name ="total">
         </p>
+        <button id="gettotal" onclick="performgettRequest()" >Find total</button>
         <p>
             <label for="interval">Interval</label>
             <input type="number" id="interval" name ="interval">
         </p>
-        <input type="submit" id="submit" value="SCRAPE" name="endobjectid"/>
+        <input type="submit" id="submit" value="SCRAPE" />
     </form>
 
     <script>
+        //reformat to async
+function performgettRequest(e) {
+ 
+  
+  axios.post("https://services2.arcgis.com/VXHf6kKM5DRjswCH/ArcGIS/rest/services/NewGrids/FeatureServer/0/query?where=1%3D1&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&resultType=none&distance=0.0&units=esriSRUnit_Meter&returnGeodetic=false&outFields=&returnHiddenFields=false&returnGeometry=false&returnCentroid=false&multipatchOption=xyFootprint&maxAllowableOffset=&geometryPrecision=&outSR=&datumTransformation=&returnIdsOnly=false&returnCountOnly=true&returnExtentOnly=false&returnDistinctValues=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&having=&resultOffset=&resultRecordCount=&returnZ=false&returnM=false&returnExceededLimitFeatures=true&quantizationParameters=&sqlFormat=none&f=pgeojson&token=", {
+  })
+  .then(function (response) {
+      console.log(response)
+  })
+  .catch(function (error) {
+      console.log(error)
+  });
+  
+}
+// document.getElementById('gettotal').addEventListener('submit', performgetRequest());
 
     </script>
 
