@@ -23,45 +23,31 @@ router.get("/scrape", function(req, res) {
 
 //Route to Scrape for geojson
 router.post("/scrape", function(req, res) {
-
-  
-  // var promises = [];
-  // for (var i = 0; i < fileNames.length; ++i) {
-  //     promises.push(fs.readFileAsync(fileNames[i]));
-  // }
-  // Promise.all(promises).then(function() {
-  //     console.log("done");
-  // });
-  
-  // // Using Promise.map:
-  // Promise.map(fileNames, function(fileName) {
-  //     // Promise.map awaits for returned promises as well.
-  //     return fs.readFileAsync(fileName);
-  // }).then(function() {
-  //     console.log("done");
-  // });
-  
-  var total = 300000;
-  var x = 204500;
-  var y = 204600;
+  var inputx = parseInt(req.body.startobjectid);  
+  var start = inputx;    
+  var inputy = parseInt(req.body.endobjectid);
+  var inputtotal = parseInt(req.body.total);
+  var interval = parseInt(req.body.interval);
   var data = [];
-  while (x < total) {
+
+  while (inputx < inputtotal) {
     // console.log(url);
     var url =
       "https://gis.ohiodnr.gov/arcgis/rest/services/OIT_Services/odnr_landbase_v3/MapServer/4/query?where=OBJECTID+BETWEEN+" +
-      x +
+      inputx +
       "+AND+" +
-      y +
+      inputy +
       "&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&returnTrueCurves=false&resultOffset=&resultRecordCount=&f=pjson";
     rp(url)
       .then(function(htmlString) {
         console.log("Request #" + data.length + " Sent");
         data.push(htmlString);
         var files = [];
+        console.log("JSON file created");         
         for (var i = 0; i < data.length; ++i) {
           files.push(
             fs.writeFileSync(
-              "../scrape/results/guernseyparcels204500_300000_" + i + ".json",
+              "../scrape/results/guernseyparcels" + start + "_" + inputtotal + "_" + i + ".json",
               data[i],
               function(err) {
                 console.log(err);
@@ -70,22 +56,16 @@ router.post("/scrape", function(req, res) {
           );
         }
         return Promise.map(files, function (elem){
-          console.log("geoJSON file created");
-          // perform an async call, return a promise from that async call
-      }, {concurrency: 2})
-
-        // Promise.all(files).then(function() {
-      //     console.log("geoJSON file created");
-      //   });
+      }, {concurrency: 1})
       })
       .catch(function(err) {
         console.log("shit fucked up", err);
       });
-    y += 100;
-    x += 100;
-    // console.log("End   x : " + x + "       End y : " + y);
+    inputy += interval;
+    inputx += interval;
+    // console.log("End   x : " + inputx + "       End y : " + inputy);
   }
-  res.send("Scrapping");
+  // res.send("Scrapping");
 });
 
 
