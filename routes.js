@@ -24,18 +24,22 @@ router.get("/scrape", function(req, res) {
 //Route to Scrape for geojson
 router.post("/scrape", function(req, res) {
   var inputx = parseInt(req.body.startobjectid);  
-  var start = inputx;    
+  var start = inputx;
+  var beginningurl= req.body.beginningurl;    
   var inputy = parseInt(req.body.endobjectid);
   var inputtotal = parseInt(req.body.total);
   var interval = parseInt(req.body.interval);
   var data = [];
 
+
+  https://gis.bisconsultants.com/bisgis/rest/services/UvaldeWeb/MapServer//0/query?outFields=%2A&returnDistinctValues=false&geometryType=esriGeometryPoint&f=json&outSR=102100&spatialRel=esriSpatialRelIntersects&geometry=%7B%22x%22%3A-11100957%2E482293418%2C%22y%22%3A3439381%2E3613289935%7D&returnGeometry=true&inSR=102100&maxAllowableOffset=0
+
   while (inputx < inputtotal) {
     // console.log(url);
     var url =
-      "https://gis.ohiodnr.gov/arcgis/rest/services/OIT_Services/odnr_landbase_v3/MapServer/4/query?where=OBJECTID+BETWEEN+" +
+      beginningurl + "where=OBJECTID+>%3D+" +
       inputx +
-      "+AND+" +
+      "+AND+OBJECTID+<%3D" +
       inputy +
       "&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&outSR=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&returnDistinctValues=false&returnTrueCurves=false&resultOffset=&resultRecordCount=&f=pjson";
     rp(url)
@@ -47,7 +51,7 @@ router.post("/scrape", function(req, res) {
         for (var i = 0; i < data.length; ++i) {
           files.push(
             fs.writeFileSync(
-              "../scrape/results/guernseyparcels" + start + "_" + inputtotal + "_" + i + ".json",
+              "../scrape/test/parcels" + start + "_" + inputtotal + "_" + i + ".json",
               data[i],
               function(err) {
                 console.log(err);
@@ -56,7 +60,7 @@ router.post("/scrape", function(req, res) {
           );
         }
         return Promise.map(files, function (elem){
-      }, {concurrency: 1})
+      }, {concurrency: 2})
       })
       .catch(function(err) {
         console.log("shit fucked up", err);

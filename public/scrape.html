@@ -20,7 +20,7 @@
     <form method="POST" action="/scrape">
         <p>
             <label for="scrapeurl">Url to scrape</label>
-            <textarea id="scrapeurl" name="scrapeurl"></textarea>
+            <textarea id="scrapeurl" name="beginningurl"></textarea>
         </p>
         <p>
             <label for="startobjectid">Starting Value</label>
@@ -36,7 +36,7 @@
 
             <input type="number" id="total" name ="total">
         </p>
-        <button id="gettotal" onclick="performgettRequest()" >Find total</button>
+        <!-- <button id="gettotal" onclick="performgettRequest()" >Find total</button> -->
         <p>
             <label for="interval">Interval</label>
             <input type="number" id="interval" name ="interval">
